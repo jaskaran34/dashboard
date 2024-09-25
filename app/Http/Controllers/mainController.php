@@ -12,6 +12,8 @@ class mainController extends Controller
 
     function show_dashboard(){
 
+        return view('welcome');
+
     }
     function fetch_data() {
 
