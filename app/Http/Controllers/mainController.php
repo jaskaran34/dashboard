@@ -12,7 +12,8 @@ class mainController extends Controller
 
     function show_dashboard(){
 
-        return view('welcome');
+        $arr = [120, 19, 3, 5, 2, 3];
+        return view('welcome', compact('arr'));
 
     }
     function fetch_data() {
