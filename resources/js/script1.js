@@ -5,11 +5,10 @@ window.$ = window.jQuery = $;
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
-window.call_func = function(val) {
+window.call_func = function(listval) {
     
-    const apiUrl = `/api/get_data?val=`+val;
+    const apiUrl = `/api/get_data?listval=`+listval;
 
-    //alert(apiUrl);
     // Make the API request
     fetch(apiUrl, {
         method: 'GET',
@@ -25,9 +24,10 @@ window.call_func = function(val) {
     })
     .then(data => {
         
-
-      
-        myChart.data.datasets[0].data = data;
+console.log(Object.values(data.label));    
+console.log(myChart.data.label)  
+       myChart.data.labels = Object.values(data.label);
+        myChart.data.datasets[0].data = Object.values(data.label_data);
         myChart.update();
         //console.log(myChart.data.datasets[0].data);
         // Handle the response data
@@ -43,16 +43,16 @@ window.call_func = function(val) {
        // myButton();
         // You can add more functionality here
    
-        
-    
+        console.log( Object.values(label));
+
             const ctx = document.getElementById('myChart').getContext('2d');
             const myChart = new Chart(ctx, {
                 type: 'bar', // Specify the type of chart
                 data: {
-                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    labels: Object.values(label),
                     datasets: [{
-                        label: '# of Votes',
-                        data: window.arr,
+                        label: 'Topics per Sector',
+                        data: Object.values(label_data),
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',
@@ -81,6 +81,56 @@ window.call_func = function(val) {
                 }
             });
 
+            ctx.canvas.addEventListener('click', function(event) {
+                const activePoints = myChart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, false);
+                
+                if (activePoints.length > 0) {
+                    const firstPoint = activePoints[0];
+                    const label = myChart.data.labels[firstPoint.index];
+                    const value = myChart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+                    
+                    // Call your function here, passing the label and value
+                    onBarClick(label, value);
+                }
+            });
+        
+            // Function to call on bar click
+            function onBarClick(label, value) {
+                //alert(`You clicked on ${label} with a value of ${value}`);
+
+                listval=document.getElementById('change1').value;
+                const apiUrl = `/api/get_data_topic?label=`+label + '&listval=' + listval;
+
+    // Make the API request
+    fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        
+console.log(data);    exit; 
+       myChart.data.labels = Object.values(data.label);
+        myChart.data.datasets[0].data = Object.values(data.label_data);
+        myChart.update();
+        //console.log(myChart.data.datasets[0].data);
+        // Handle the response data
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+
+                // Add your logic here
+            }
+
 
 
             
@@ -88,10 +138,10 @@ window.call_func = function(val) {
             const myChart2 = new Chart(ctx2, {
                 type: 'line', // Specify the type of chart
                 data: {
-                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    labels: Object.values(label_line),
                     datasets: [{
-                        label: '# of Votes',
-                        data: [1,2,3,4,5,6],
+                        label: 'Avg Intensity Over Time',
+                        data: Object.values(label_data_line),
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',
