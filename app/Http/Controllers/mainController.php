@@ -16,7 +16,7 @@ class mainController extends Controller
         $default_list=5;
 
         $results = DB::select("WITH ranked_sectors AS (
-            SELECT sector, count(distinct(topic)) AS topic_count,
+            SELECT sector, count(topic) AS topic_count,
                    ROW_NUMBER() OVER (ORDER BY count(distinct(topic)) DESC) AS rank
             FROM topics
             WHERE length(sector) > 0
@@ -96,6 +96,14 @@ ORDER BY avg_impact desc,avg_intensity desc limit 5");
             return $results;
 
     }
+
+    function fetch_region(){
+
+        $results = DB::select("select distinct region from topics where length(region)>0 order by region");
+            
+            return $results;
+
+    }
     function show_dashboard(){
 
         $results=$this->bar_graph();
@@ -109,6 +117,16 @@ ORDER BY avg_impact desc,avg_intensity desc limit 5");
 
         $end_year_filter=$this->fetch_end_year();
 
+        $region_arr=$this->fetch_region();
+
+        
+        $region = [];
+       
+
+        foreach ($region_arr as $region_arrs) {
+            $region[] = $region_arrs->region;
+           
+        }
         
         
         $end_year_arr = [];
@@ -167,7 +185,7 @@ ORDER BY avg_impact desc,avg_intensity desc limit 5");
 
 
         return view('welcome', compact('label','label_data','label_line','label_data_line','label_pie', 'label_data_pie','label_stacked','label_data_stacked_impact','label_data_stacked_intensity',
-    'label_data_stacked_topic_count','end_year_arr'));
+    'label_data_stacked_topic_count','end_year_arr','region'));
 
     }
     function fetch_data() {

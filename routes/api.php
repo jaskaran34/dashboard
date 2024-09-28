@@ -13,7 +13,12 @@ Route::get('/user', function (Request $request) {
 
 
 
-Route::get('/filter_data', [FetchData::class, 'get_data']);
+Route::get('/filter_data_bar', [FetchData::class, 'get_data']);
+
+Route::get('/filter_data_line', [FetchData::class, 'get_data_line']);
+
+
+
 
 Route::get('/get_data_topic', function (Request $request) {
 

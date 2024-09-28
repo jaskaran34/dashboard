@@ -79,6 +79,13 @@
     </div>
                         </td>
                         <td>
+
+                        </td>
+                        <td>
+                            <label>region</label>
+                        </td>
+                        
+                        <td>
                             <button class="btn btn-primary" onclick="filter_data();">filter</button>
                         </td>
                     </tr>
@@ -97,14 +104,24 @@
         <div class="col-5">
                 <div class="card">
                     <div class="card-header">
-                        <label>List: </label>
-                    <select id="change1" onchange="call_func(this.value)">
+                        
+                    <label>List: </label>
+                    <select id="change1" onchange="call_func()">
                             <option value="5">Top 5 Sectors</option>
                             <option value="10">Top 10 Sectors</option>
                             <option value="20">Top 20 Sectors</option>
                             <option value="0">All</option>
                         </select>
-                        
+                        <label>Impact</label>
+                        <select id="filter_impact" onchange="call_func()">
+                            <option value="#">select</option>
+                            <option value="4">high</option>
+                            <option value="3">medium</option>
+                            <option value="2">low</option>
+                        </select>
+                            
+
+
 
                     </div>
                     <div class="card-body>">

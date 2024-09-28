@@ -6,7 +6,7 @@ import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
 
-window.update_chart=function(apiUrl){
+window.update_chart=function(apiUrl,chart_code){
     fetch(apiUrl, {
         method: 'GET',
         headers: {
@@ -21,10 +21,21 @@ window.update_chart=function(apiUrl){
     })
     .then(data => {
 
+        if(chart_code=='1'){
           
         myChart.data.labels = Object.values(data.label);
         myChart.data.datasets[0].data = Object.values(data.label_data);
         myChart.update();
+
+        }
+
+        if(chart_code=='2'){
+          
+            myChart2.data.labels = Object.values(data.label);
+            myChart2.data.datasets[0].data = Object.values(data.label_data);
+            myChart2.update();
+    
+            }
         // Handle the response data
     })
     .catch(error => {
@@ -33,26 +44,43 @@ window.update_chart=function(apiUrl){
 }
 
 window.filter_data= function(){
-    let selOptions=document.getElementById('selectedOptions').value;
-    let listval_mychart=document.getElementById('change1').value;
-    let flag='OV';
-    const apiUrl = `/api/filter_data?end_year=`+selOptions + '&listval_mychart=' + listval_mychart + '&flag=' + flag;
 
-    update_chart(apiUrl);
+    let selOptions= document.getElementById('selectedOptions').value ?? '';
+    let flag='OV';
     
+    let filter_impact=document.getElementById('filter_impact').value;
+
+
+    //chart1 
+    let listval_mychart=document.getElementById('change1').value;
+    const apiUrl_bar = `/api/filter_data_bar?end_year=`+selOptions + '&listval_mychart=' + listval_mychart + '&flag=' + flag + '&impact=' + filter_impact;
+    update_chart(apiUrl_bar,'1');
+
+    
+    //chart2
+    let listval_linechart='5';
+    const apiUrl_line = `/api/filter_data_line?end_year=`+selOptions + '&listval_mychart=' + listval_linechart + '&flag=' + flag + '&impact=' + filter_impact;
+    update_chart(apiUrl_line,'2');
+
 
 }
 
 
 
-window.call_func = function(listval_mychart) {
+window.call_func = function() {
 
     let selOptions= document.getElementById('selectedOptions').value ?? '';
     let flag='OV';
-    const apiUrl = `/api/filter_data?end_year=`+selOptions + '&listval_mychart=' + listval_mychart + '&flag=' + flag;
 
-    //console.log(apiUrl);
-    update_chart(apiUrl);
+    
+
+    let listval_mychart=document.getElementById('change1').value;
+    let filter_impact=document.getElementById('filter_impact').value;
+
+
+    let apiUrl = `/api/filter_data_bar?end_year=`+selOptions + '&listval_mychart=' + listval_mychart + '&flag=' + flag + '&impact=' + filter_impact;
+    console.log(apiUrl);
+    update_chart(apiUrl,'1');
 
 
 }
@@ -60,7 +88,6 @@ window.call_func = function(listval_mychart) {
        // myButton();
         // You can add more functionality here
    
-        console.log( Object.values(label));
 
             const ctx = document.getElementById('myChart').getContext('2d');
             const myChart = new Chart(ctx, {
@@ -93,8 +120,8 @@ window.call_func = function(listval_mychart) {
                     scales: {
                         y: {
                             beginAtZero: false,
-                                min: -10, // Set a minimum value for the y-axis
-                                max: 100, // Set a maximum value for the y-axis
+                                min: 0, // Set a minimum value for the y-axis
+                                max: 200, // Set a maximum value for the y-axis
                                 ticks: {
                                     display: true // Hide the y-axis ticks
                                 
