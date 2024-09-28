@@ -60,15 +60,19 @@ class FetchData extends Controller
 
 
     function get_data(Request $request){
-
+ 
+        
         
             return $this->data_barchart($request->listval_mychart, $request->end_year ? $request->end_year : '#'
-            , $request->impact ? $request->impact : '#');
+            , $request->impact ? $request->impact : '#'
+            , $request->region ? $request->region : '#'
+            , $request->relevance ? $request->relevance : '#'
+        );
                 
-
+            
     }
 
-    function data_barchart($default_list,$end_year,$impact) {
+    function data_barchart($default_list,$end_year,$impact,$region,$relevance) {
 
        // return json_encode($end_year);
 
@@ -79,6 +83,26 @@ class FetchData extends Controller
         if($end_year!='#'){
             $cond = ' and end_year IN (' . implode(',', $yearsArray) . ') ';
         }  
+
+
+                $regionArray = explode(',', $region);
+
+        if ($region != '#') {
+            // Add single quotes around each region element
+            $regionArray = array_map(function($region) {
+                return "'" . trim($region) . "'";
+            }, $regionArray);
+
+            if (in_array("'World'", $regionArray)) {
+                // Add the condition for region='' if "world" is present
+                $regionArray[] = "''";  // Add empty string condition
+            }
+            
+            // Now implode the array with commas
+            $cond = $cond.' and region IN (' . implode(',', $regionArray) . ') ';
+        }
+
+        //return $cond;
         
         if($impact!='#'){
             if($impact>2){
@@ -89,7 +113,23 @@ class FetchData extends Controller
                 
             }
             
-        }  
+        } 
+
+        if($relevance!='#'){
+            if($relevance>2){
+                $cond = $cond.' and relevance='.$relevance;
+            }
+            
+            
+        } 
+
+
+        
+        
+       
+               //return json_encode($relevance);
+
+        
         
         if($default_list=="0"){
     

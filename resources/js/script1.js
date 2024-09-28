@@ -22,7 +22,7 @@ window.update_chart=function(apiUrl,chart_code){
     .then(data => {
 
         if(chart_code=='1'){
-          
+          console.log(data);
         myChart.data.labels = Object.values(data.label);
         myChart.data.datasets[0].data = Object.values(data.label_data);
         myChart.update();
@@ -46,20 +46,29 @@ window.update_chart=function(apiUrl,chart_code){
 window.filter_data= function(){
 
     let selOptions= document.getElementById('selectedOptions').value ?? '';
+    let selectedRegionOptions= document.getElementById('selectedRegionOptions').value ?? '';
+    let relevance= document.getElementById('mySlider').value.trim() ?? '';
+
+    
     let flag='OV';
     
-    let filter_impact=document.getElementById('filter_impact').value;
+    
 
 
     //chart1 
     let listval_mychart=document.getElementById('change1').value;
-    const apiUrl_bar = `/api/filter_data_bar?end_year=`+selOptions + '&listval_mychart=' + listval_mychart + '&flag=' + flag + '&impact=' + filter_impact;
+    let filter_impact=document.getElementById('filter_impact').value;
+
+    const apiUrl_bar = `/api/filter_data_bar?end_year=`+selOptions + '&relevance=' + relevance + '&region=' + selectedRegionOptions + '&listval_mychart=' + listval_mychart + '&flag=' + flag + 
+    '&impact=' + filter_impact ;
+    
+    console.log(apiUrl_bar);
     update_chart(apiUrl_bar,'1');
 
     
     //chart2
     let listval_linechart='5';
-    const apiUrl_line = `/api/filter_data_line?end_year=`+selOptions + '&listval_mychart=' + listval_linechart + '&flag=' + flag + '&impact=' + filter_impact;
+    const apiUrl_line = `/api/filter_data_line?end_year=`+selOptions + '&region=' + selectedRegionOptions + '&listval_mychart=' + listval_linechart + '&flag=' + flag + '&impact=' + filter_impact;
     update_chart(apiUrl_line,'2');
 
 
@@ -71,15 +80,15 @@ window.call_func = function() {
 
     let selOptions= document.getElementById('selectedOptions').value ?? '';
     let flag='OV';
-
+    let selectedRegionOptions= document.getElementById('selectedRegionOptions').value ?? '';
     
 
     let listval_mychart=document.getElementById('change1').value;
     let filter_impact=document.getElementById('filter_impact').value;
 
 
-    let apiUrl = `/api/filter_data_bar?end_year=`+selOptions + '&listval_mychart=' + listval_mychart + '&flag=' + flag + '&impact=' + filter_impact;
-    console.log(apiUrl);
+    let apiUrl = `/api/filter_data_bar?end_year=`+selOptions + '&region=' + selectedRegionOptions + '&listval_mychart=' + listval_mychart + '&flag=' + flag + '&impact=' + filter_impact;
+   // console.log(apiUrl);
     update_chart(apiUrl,'1');
 
 
