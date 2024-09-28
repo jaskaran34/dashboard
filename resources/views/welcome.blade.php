@@ -58,23 +58,35 @@
             <div class="col-5">
 
             <div class="card">
+                <div class="card-header">
                 <table style="padding: 10px;">
                     <tr>
                         <td>
+                            <label>End Year</label>
+                        
                         <div class="dropdown-checkbox">
-        <button type="button" onclick="toggleDropdown()">Select Options</button>
+        <button type="button" onclick="toggleDropdown()" id="toggleDropdown_btn">Select</button>
         <div id="dropdownContent" class="dropdown-checkbox-content" style="display: none;">
-            <label><input type="checkbox" name="options[]" value="Option 1" onclick="handleCheckboxChange(this)"> Option 1</label>
-            <label><input type="checkbox" name="options[]" value="Option 2" onclick="handleCheckboxChange(this)"> Option 2</label>
-            <label><input type="checkbox" name="options[]" value="Option 3" onclick="handleCheckboxChange(this)"> Option 3</label>
-        </div>
+
+        <?php
+//$abc=['1','2','3'];
+
+        ?>
+@foreach($end_year_arr as $end_year)
+<label><input type="checkbox" name="options[]" value="{{ $end_year }}" onclick="handleCheckboxChange(this)"> {{ $end_year }}</label>
+@endforeach         
+</div>
     </div>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" onclick="filter_data();">filter</button>
                         </td>
                     </tr>
                 </table>
     
-    <!--<div id="selectedOptions" style="margin-top: 20px;"></div>-->
-            </div>
+        <div id="selectedOptions" style="margin-top: 20px;"></div>
+</div>            
+</div>
     </div>
 </div>
 
@@ -82,7 +94,7 @@
         <div class="row design">
             
 
-        <div class="col-6">
+        <div class="col-5">
                 <div class="card">
                     <div class="card-header">
                         <label>List: </label>
@@ -102,7 +114,7 @@
             
             </div>
 
-            <div class="col-5">
+            <div class="col-3">
                 <div class="card">
                     <div class="card-header">
 
@@ -116,6 +128,36 @@
 
 
 
+
+        </div>
+        <div class="row design">
+
+        <div class="col-5">
+                <div class="card">
+                    <div class="card-header">
+                        
+                    
+                        
+
+                    </div>
+                    <div class="card-body>">
+                    <canvas id="myChart_stacked" ></canvas>
+                    </div>
+                </div>
+            
+            </div>
+
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-header">
+
+                    </div>
+                    <div class="card-body>">
+                    <canvas id="myChart_pie" ></canvas>
+                    </div>
+                </div>
+            
+            </div>
 
         </div>
     
@@ -146,9 +188,19 @@
                 selectedOptions.push(cb.value);
             }
         });
+       // document.getElementById('selectedOptions').innerHTML=selectedOptions;
+        document.getElementById('selectedOptions').value=selectedOptions;
 
-        // Display the selected options
-        selectedOptionsDiv.innerHTML = 'Selected Options: ' + selectedOptions.join(', ');
+        if(selectedOptions.length>0){
+            document.getElementById('toggleDropdown_btn').innerHTML=selectedOptions;
+            //alert(document.getElementById('toggleDropdown_btn').innerHTML);
+           // =selectedOptions;
+        }
+        else{
+            document.getElementById('toggleDropdown_btn').innerHTML='Select';
+        }
+        
+        //alert(document.getElementById('selectedOptions').value);
     }
 
     // Close the dropdown if the user clicks outside of it
@@ -166,11 +218,25 @@
 </script>
 
         <script>
+
+
+
+
+
+
     window.label= @json($label);
     window.label_data = @json($label_data);
     window.label_line = @json($label_line);
     window.label_data_line = @json($label_data_line);
+    window.label_pie = @json($label_pie);
+    window.label_data_pie = @json($label_data_pie);
+
+    window.label_stacked = @json($label_stacked);
+    window.label_data_stacked_impact = @json($label_data_stacked_impact);
+    window.label_data_stacked_intensity = @json($label_data_stacked_intensity);
+    window.label_data_stacked_topic_count = @json($label_data_stacked_topic_count);
    
+    
 </script>
 
 

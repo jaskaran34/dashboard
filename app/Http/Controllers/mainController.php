@@ -58,6 +58,44 @@ return $results;
 
 
     }
+    function pie_graph(){
+        
+
+        $results = DB::select("SELECT 
+    swot,
+    COUNT(*) AS category_count
+FROM 
+    public.topics
+WHERE 
+    swot IN ('Strength', 'Weakness', 'Opportunity', 'Threat')
+GROUP BY 
+    swot;
+        ");
+        
+        return $results;
+
+    }
+
+    function stacked_graph(){
+
+        $results = DB::select("SELECT sector, 
+       round(AVG(impact)) AS avg_impact, 
+       round(AVG(likelihood)) AS avg_intensity,
+       COUNT(*) AS topic_count
+FROM public.topics where length(sector)>0 and impact is not null and intensity is not null
+GROUP BY sector
+ORDER BY avg_impact desc,avg_intensity desc limit 5");
+            
+            return $results;
+    }
+
+    function fetch_end_year(){
+
+        $results = DB::select("SELECT distinct end_year FROM public.topics order by end_year");
+            
+            return $results;
+
+    }
     function show_dashboard(){
 
         $results=$this->bar_graph();
@@ -65,6 +103,23 @@ return $results;
 
         $result_line=$this->line_graph();
 
+        $result_pie=$this->pie_graph();
+
+        $result_stacked=$this->stacked_graph();
+
+        $end_year_filter=$this->fetch_end_year();
+
+        
+        
+        $end_year_arr = [];
+       
+
+        foreach ($end_year_filter as $end_year_filters) {
+            $end_year_arr[] = $end_year_filters->end_year;
+           
+        }
+        //return $end_year_arr; 
+        
         $label = [];
         $label_data = [];
 
@@ -73,6 +128,23 @@ return $results;
             $label_data[] = $result->topic_count;
         }
 
+
+        $label_stacked = [];
+        $label_data_stacked_impact = [];
+        $label_data_stacked_intensity = [];
+        $label_data_stacked_topic_count = [];
+
+        
+
+        foreach ($result_stacked as $result_stackeds) {
+            $label_stacked[] = $result_stackeds->sector;
+            $label_data_stacked_impact[] = $result_stackeds->avg_impact;
+            $label_data_stacked_intensity[] = $result_stackeds->avg_intensity;
+            $label_data_stacked_topic_count[] = $result_stackeds->topic_count;
+            
+        }
+
+        //return $label_data_stacked_intensity;exit;
         $label_line = [];
         $label_data_line = [];
 
@@ -82,8 +154,20 @@ return $results;
         }
 
 
+        $label_pie = [];
+        $label_data_pie = [];
 
-        return view('welcome', compact('label','label_data','label_line','label_data_line'));
+        foreach ($result_pie as $result_pies) {
+            $label_pie[] = $result_pies->swot;
+            $label_data_pie[] = $result_pies->category_count;
+        }
+
+        //return $label_pie;exit;
+
+
+
+        return view('welcome', compact('label','label_data','label_line','label_data_line','label_pie', 'label_data_pie','label_stacked','label_data_stacked_impact','label_data_stacked_intensity',
+    'label_data_stacked_topic_count','end_year_arr'));
 
     }
     function fetch_data() {
