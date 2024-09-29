@@ -13,6 +13,7 @@
        
 @vite(['resources/css/app.css'])
 <style> 
+
 .dropdown-checkbox {
     position: relative;
     display: inline-block;
@@ -60,9 +61,10 @@
     
   font-size: 14px;
   font-weight: bold;
-  color: #007bff;
+  color: green;
   margin-bottom: 5px;
   margin-left: 20px;
+  margin-right:5px;
   vertical-align: super;
 
 }
@@ -70,8 +72,8 @@
 .range_container {
   display: flex;
   flex-direction: row;
-  margin-left: 20px;
-  margin-top: 60px;
+  
+  margin-top: 62px;
 
 }
 
@@ -155,6 +157,14 @@ input[type=number]::-webkit-outer-spin-button {
   height: 0;
   z-index: 1;
 }
+
+
+#filter_card{
+    border: 2px solid #6161dc;
+    border-radius: 20px;
+    
+}
+
 </style>
     </head>
     <body class="font-sans antialiased dark:bg-black dark:text-white/50">
@@ -167,9 +177,9 @@ input[type=number]::-webkit-outer-spin-button {
 
             <div class="col-12">
 
-            <div class="card">
+            <div class="card" id="filter_card">
                 <div class="card-header">
-                <table style="padding: 10px;">
+                <table>
                     <tr>
                         <td>
                             <label class="lbl">End Year</label>
@@ -257,8 +267,17 @@ input[type=number]::-webkit-outer-spin-button {
         <div class="col-5">
                 <div class="card">
                     <div class="card-header">
-                        
-                    <label>List: </label>
+                    <h5>Sectors Analysis</h5>    
+                
+                    </div>
+                    <div class="card-body>">
+                        <div style="margin-bottom: 1%;
+    float: right;
+    margin-top: 1%;
+    margin-right: 1%;
+    color: blue;
+    font-weight: 600;">
+                        <label>List: </label>
                     <select id="change1" onchange="call_func()">
                             <option value="5">Top 5 Sectors</option>
                             <option value="10">Top 10 Sectors</option>
@@ -272,13 +291,26 @@ input[type=number]::-webkit-outer-spin-button {
                             <option value="3">medium</option>
                             <option value="2">low</option>
                         </select>
-                            
+                        </div>
+                    <canvas id="myChart" ></canvas>
+                    </div>
+                </div>
+            
+            </div>
 
-
-
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                    <h5>Pestle Analysis</h5>
                     </div>
                     <div class="card-body>">
-                    <canvas id="myChart" ></canvas>
+                    <div style="margin-bottom: 7%;
+    float: right;
+    margin-top: 1%;
+    margin-right: 1%;
+    color: white;
+    font-weight: 600;"><h1>hellp</h1></div>
+                    <canvas id="myChart2" ></canvas>
                     </div>
                 </div>
             
@@ -287,16 +319,15 @@ input[type=number]::-webkit-outer-spin-button {
             <div class="col-3">
                 <div class="card">
                     <div class="card-header">
+                        <h5>Swot Analysis</h5>
 
                     </div>
                     <div class="card-body>">
-                    <canvas id="myChart2" ></canvas>
+                    <canvas id="myChart_pie" ></canvas>
                     </div>
                 </div>
             
             </div>
-
-
 
 
         </div>
@@ -317,17 +348,7 @@ input[type=number]::-webkit-outer-spin-button {
             
             </div>
 
-            <div class="col-3">
-                <div class="card">
-                    <div class="card-header">
-
-                    </div>
-                    <div class="card-body>">
-                    <canvas id="myChart_pie" ></canvas>
-                    </div>
-                </div>
             
-            </div>
 
         </div>
     

@@ -110,7 +110,7 @@ window.call_func = function() {
                 data: {
                     labels: Object.values(label),
                     datasets: [{
-                        label: 'Topics per Sector',
+                        label: 'Records per Sector',
                         data: Object.values(label_data),
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
@@ -206,7 +206,7 @@ console.log(data);    exit;
                 data: {
                     labels: Object.values(label_line),
                     datasets: [{
-                        label: 'Avg Intensity Over Time',
+                        label: 'Records per Pestle',
                         data: Object.values(label_data_line),
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',

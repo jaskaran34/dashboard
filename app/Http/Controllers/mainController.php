@@ -39,19 +39,7 @@ class mainController extends Controller
 
 $default_cond="5";
 
-$results = DB::select("SELECT 
-    start_year, 
-    round(AVG(intensity)) AS avg_intensity
-FROM 
-    public.topics
-WHERE 
-    start_year IS NOT NULL
-    AND start_year % ".$default_cond." = 0 
-GROUP BY 
-    start_year
-ORDER BY 
-    start_year ASC;
-");
+$results = DB::select("select distinct pestle,count(*) from topics	group by pestle");
 
 return $results;
 
@@ -61,16 +49,7 @@ return $results;
     function pie_graph(){
         
 
-        $results = DB::select("SELECT 
-    swot,
-    COUNT(*) AS category_count
-FROM 
-    public.topics
-WHERE 
-    swot IN ('Strength', 'Weakness', 'Opportunity', 'Threat')
-GROUP BY 
-    swot;
-        ");
+        $results = DB::select("select  distinct swot,count(*) AS category_count from topics group by swot;");
         
         return $results;
 
@@ -194,8 +173,26 @@ ORDER BY avg_impact desc,avg_intensity desc limit 5");
         $label_data_line = [];
 
         foreach ($result_line as $result_lines) {
-            $label_line[] = $result_lines->start_year;
-            $label_data_line[] = $result_lines->avg_intensity;
+            
+            if($result_lines->pestle=='')
+            {
+
+            }
+            else{
+                $label_line[] = $result_lines->pestle;
+                $label_data_line[] = $result_lines->count;
+            }
+            
+        }
+
+        foreach ($result_line as $result_lines) {
+            
+            if($result_lines->pestle=='')
+            {
+                $label_line[] = 'No Data';
+                $label_data_line[] = $result_lines->count;
+            }
+            
         }
 
 
@@ -203,6 +200,13 @@ ORDER BY avg_impact desc,avg_intensity desc limit 5");
         $label_data_pie = [];
 
         foreach ($result_pie as $result_pies) {
+
+            if($result_pies->swot=='')
+            {
+                $label_pie[] = 'No Data';
+            }else{
+
+            }
             $label_pie[] = $result_pies->swot;
             $label_data_pie[] = $result_pies->category_count;
         }
