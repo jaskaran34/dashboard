@@ -12,165 +12,24 @@
 
        
 @vite(['resources/css/app.css'])
-<style> 
 
-.dropdown-checkbox {
-    position: relative;
-    display: inline-block;
-    vertical-align: super;
-}
-
-.dropdown-checkbox-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 200px;
-    max-height: 200px; /* Set maximum height */
-    overflow-y: auto;  /* Enable vertical scrolling */
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-}
-
-.dropdown-checkbox-content label {
-    display: block;
-    padding: 8px 16px;
-    cursor: pointer;
-}
-
-.dropdown-checkbox-content label:hover {
-    background-color: #f1f1f1;
-}
-
-.dropdown-checkbox:hover .dropdown-checkbox-content {
-    display: block;
-}
-
-.design{
-    margin: 10px auto;
-    padding: 10px;
-}
-
-.checkbox_text{
-    overflow: hidden;
-    width: 150px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: left;
-}
-.lbl{
-    
-  font-size: 14px;
-  font-weight: bold;
-  color: green;
-  margin-bottom: 5px;
-  margin-left: 20px;
-  margin-right:5px;
-  vertical-align: super;
-
-}
-
-.range_container {
-  display: flex;
-  flex-direction: row;
-  
-  margin-top: 62px;
-
-}
-
-.sliders_control {
-  position: relative;
-  min-height: 50px;
-}
-
-.form_control {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  font-size: 24px;
-  color: #635a5a;
-}
-
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  pointer-events: all;
-  width: 24px;
-  height: 24px;
-  background-color: #fff;
-  border-radius: 50%;
-  box-shadow: 0 0 0 1px #C6C6C6;
-  cursor: pointer;
-}
-
-input[type=range]::-moz-range-thumb {
-  -webkit-appearance: none;
-  pointer-events: all;
-  width: 24px;
-  height: 24px;
-  background-color: #fff;
-  border-radius: 50%;
-  box-shadow: 0 0 0 1px #C6C6C6;
-  cursor: pointer;  
-}
-
-input[type=range]::-webkit-slider-thumb:hover {
-  background: #f7f7f7;
-}
-
-input[type=range]::-webkit-slider-thumb:active {
-  box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
-  -webkit-box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
-}
-
-input[type="number"] {
-  color: #8a8383;
-  width: 50px;
-  height: 30px;
-  font-size: 20px;
-  border: none;
-}
-
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button {  
-   opacity: 1;
-}
-
-#mySlider{
-  -webkit-appearance: none; 
-  appearance: none;
-  height: 2px;
-  background-color: #C6C6C6;
-  pointer-events: none;
-  vertical-align: super;
-  
-}
-
-.sli {
-  -webkit-appearance: none; 
-  appearance: none;
-  height: 2px;
-  position: absolute;
-  background-color: #C6C6C6;
-  pointer-events: none;
-}
-
-#fromSlider {
-  height: 0;
-  z-index: 1;
-}
-
-
-#filter_card{
-    border: 2px solid #6161dc;
-    border-radius: 20px;
-    
-}
-
-</style>
     </head>
     <body class="font-sans antialiased dark:bg-black dark:text-white/50">
-
-
     <div class="container" style="margin: auto auto;">
+
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <div class="card">
+                <div class="card-header">
+                <span class="close" data-modal="modal1">&times;</span>
+                </div>
+                <div class="card-body">
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
 
     <div class="row design">
             
@@ -249,7 +108,12 @@ input[type=number]::-webkit-outer-spin-button {
                         </td>
 
                         <td>
-                            <button class="btn btn-info " style="margin-left: 50px;color:white;" onclick="filter_data();">Filter</button>
+                            <button class="btn btn-success " style="margin-left: 50px;color:white;
+            width: 200px; /* Custom width */
+            height: 35px; /* Custom height */
+            line-height: 35px; /* Match height to align text vertically */
+            padding: 0; /* Remove default padding */
+            text-align: center;" onclick="filter_data();">Filter</button>
                         </td>
                     </tr>
                 </table>
@@ -519,6 +383,35 @@ fromSlider.oninput = () => controlFromSlider(fromSlider, toSlider, fromInput);
 toSlider.oninput = () => controlToSlider(fromSlider, toSlider, toInput);
 fromInput.oninput = () => controlFromInput(fromSlider, fromInput, toInput, toSlider);
 toInput.oninput = () => controlToInput(toSlider, fromInput, toInput, toSlider);
+
+
+function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = "block";
+        }
+
+        // Function to close modal
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = "none";
+        }
+
+        // Get all buttons and attach event listeners
+        
+
+        document.querySelectorAll('.close').forEach(function(element) {
+            element.addEventListener('click', function() {
+                const modalId = this.getAttribute('data-modal');
+                closeModal(modalId);
+            });
+        });
+
+        // Close modal if user clicks outside of modal content
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = "none";
+            }
+        }
 
 
     window.label= @json($label);

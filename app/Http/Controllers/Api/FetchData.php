@@ -8,6 +8,26 @@ use Illuminate\Http\Request;
 class FetchData extends Controller
 {
 
+    function  filter_single_data_bar(Request $request){
+
+        $cond=" where 1=1 and sector='".$request->label."'";
+
+        $result=DB::select("select '".$request->label."' as sector,sum(distinct_topic) as distinct_topic,sum(distinct_swot) as distinct_swot,sum(distinct_pestle ) as distinct_pestle,
+	sum(max_intensity) as max_intensity ,sum(distinct_regions) as distinct_regions from(       
+	select count(distinct(topic)) as distinct_topic,0 as distinct_swot, 0 as distinct_pestle,0 as max_intensity,0  as distinct_regions from topics ".$cond."    
+	union 
+	select 0 as distinct_topic,count(distinct(swot)) as distinct_swot,0 as distinct_pestle,0 as max_intensity,0  as distinct_regions from topics ".$cond." 
+        union 
+	select 0 as distinct_topic,0 as distinct_swot,count(distinct(pestle)) as distinct_pestle,0 as max_intensity,0  as distinct_regions from topics ".$cond." 
+        union 
+	select 0 as distinct_topic,0 as distinct_swot,0  as distinct_pestle,max(intensity) as max_intensity ,0  as distinct_regions from topics ".$cond." 
+        union 
+	select 0 as distinct_topic,0 as distinct_swot,0  as distinct_pestle,0 as  max_intensity,count(distinct(region)) as distinct_regions from topics ".$cond." and  length(region)>0  
+)");
+
+return json_encode($result);
+    }
+
     function filter_data_radar(Request $request){
         return $this->data_radar($request->end_year ? $request->end_year : '#'
         ,$request->region ? $request->region : '#'

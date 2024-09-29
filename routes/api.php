@@ -23,6 +23,9 @@ Route::get('/filter_data_bar_stacked', [FetchData::class, 'filter_data_bar_stack
 
 Route::get('/filter_data_radar', [FetchData::class, 'filter_data_radar']);
 
+Route::get('/filter_single_data_bar', [FetchData::class, 'filter_single_data_bar']);
+
+
 
 
 

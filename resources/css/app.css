@@ -1,1 +1,186 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.4); /* Black background with opacity */
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 80%; /* Limit width */
+}
+
+/* The close button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.dropdown-checkbox {
+position: relative;
+display: inline-block;
+vertical-align: super;
+}
+
+.dropdown-checkbox-content {
+display: none;
+position: absolute;
+background-color: #f9f9f9;
+min-width: 200px;
+max-height: 200px; /* Set maximum height */
+overflow-y: auto;  /* Enable vertical scrolling */
+box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+z-index: 1;
+}
+
+.dropdown-checkbox-content label {
+display: block;
+padding: 8px 16px;
+cursor: pointer;
+}
+
+.dropdown-checkbox-content label:hover {
+background-color: #f1f1f1;
+}
+
+.dropdown-checkbox:hover .dropdown-checkbox-content {
+display: block;
+}
+
+.design{
+margin: 10px auto;
+padding: 10px;
+}
+
+.checkbox_text{
+overflow: hidden;
+width: 150px;
+text-overflow: ellipsis;
+white-space: nowrap;
+text-align: left;
+}
+.lbl{
+
+font-size: 14px;
+font-weight: bold;
+color: blue;
+margin-bottom: 5px;
+margin-left: 20px;
+margin-right:5px;
+vertical-align: super;
+
+}
+
+.range_container {
+display: flex;
+flex-direction: row;
+
+margin-top: 62px;
+
+}
+
+.sliders_control {
+position: relative;
+min-height: 50px;
+}
+
+.form_control {
+position: relative;
+display: flex;
+justify-content: space-between;
+font-size: 24px;
+color: #635a5a;
+}
+
+input[type=range]::-webkit-slider-thumb {
+-webkit-appearance: none;
+pointer-events: all;
+width: 24px;
+height: 24px;
+background-color: #fff;
+border-radius: 50%;
+box-shadow: 0 0 0 1px #C6C6C6;
+cursor: pointer;
+}
+
+input[type=range]::-moz-range-thumb {
+-webkit-appearance: none;
+pointer-events: all;
+width: 24px;
+height: 24px;
+background-color: #fff;
+border-radius: 50%;
+box-shadow: 0 0 0 1px #C6C6C6;
+cursor: pointer;  
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+background: #f7f7f7;
+}
+
+input[type=range]::-webkit-slider-thumb:active {
+box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
+-webkit-box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
+}
+
+input[type="number"] {
+color: #8a8383;
+width: 50px;
+height: 30px;
+font-size: 20px;
+border: none;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {  
+opacity: 1;
+}
+
+#mySlider{
+-webkit-appearance: none; 
+appearance: none;
+height: 2px;
+background-color: #C6C6C6;
+pointer-events: none;
+vertical-align: super;
+
+}
+
+.sli {
+-webkit-appearance: none; 
+appearance: none;
+height: 2px;
+position: absolute;
+background-color: #C6C6C6;
+pointer-events: none;
+}
+
+#fromSlider {
+height: 0;
+z-index: 1;
+}
+
+
+
