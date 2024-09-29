@@ -22,7 +22,7 @@ window.update_chart=function(apiUrl,chart_code){
     .then(data => {
 
         if(chart_code=='1'){
-          console.log(data);
+         // console.log(data);
         myChart.data.labels = Object.values(data.label);
         myChart.data.datasets[0].data = Object.values(data.label_data);
         myChart.update();
@@ -30,12 +30,45 @@ window.update_chart=function(apiUrl,chart_code){
         }
 
         if(chart_code=='2'){
-          
+            //console.log(data);
             myChart2.data.labels = Object.values(data.label);
             myChart2.data.datasets[0].data = Object.values(data.label_data);
             myChart2.update();
     
             }
+
+            if(chart_code=='3'){
+                console.log(data);
+                myChart_pie.data.labels = Object.values(data.label);
+                myChart_pie.data.datasets[0].data = Object.values(data.label_data);
+                myChart_pie.update();
+        
+                }
+                if(chart_code=='4'){
+                    console.log(data);
+
+
+
+                    myChart_bar_stacked.data.labels = Object.values(data.sector_bar_stacked);
+                    myChart_bar_stacked.data.datasets[0].data = Object.values(data.low);
+                    myChart_bar_stacked.data.datasets[1].data = Object.values(data.medium);
+                    myChart_bar_stacked.data.datasets[2].data = Object.values(data.high);
+                    myChart_bar_stacked.update();
+            
+                    }
+                    if(chart_code=='5'){
+                        console.log(data);
+
+
+                        myChart_stacked.data.labels = Object.values(data.label_stacked);
+                        myChart_stacked.data.datasets[0].data = Object.values(data.label_data_stacked_impact);
+                        myChart_stacked.data.datasets[1].data = Object.values(data.label_data_stacked_intensity);
+                        myChart_stacked.data.datasets[2].data = Object.values(data.label_data_stacked_topic_count);
+                        myChart_stacked.update();
+                
+                        }
+
+                
         // Handle the response data
     })
     .catch(error => {
@@ -64,14 +97,46 @@ window.filter_data= function(){
     + '&region=' + selectedRegionOptions + '&listval_mychart=' + listval_mychart + '&flag=' + flag + 
     '&impact=' + filter_impact ;
     
-    console.log(apiUrl_bar);
+    //console.log(apiUrl_bar);
     update_chart(apiUrl_bar,'1');
 
     
     //chart2
-    let listval_linechart='5';
-    const apiUrl_line = `/api/filter_data_line?end_year=`+selOptions + '&region=' + selectedRegionOptions + '&listval_mychart=' + listval_linechart + '&flag=' + flag + '&impact=' + filter_impact;
+    //let listval_linechart='5';
+    const apiUrl_line = `/api/filter_data_line?end_year=`+selOptions + '&relevance=' + relevance 
+    + '&min_intensity=' + min_intensity
+    + '&max_intensity=' + max_intensity
+     + '&region=' + selectedRegionOptions  + '&flag=' + flag;
+
+    //console.log(apiUrl_line);
     update_chart(apiUrl_line,'2');
+
+
+    const apiUrl_pie = `/api/filter_data_pie?end_year=`+selOptions + '&relevance=' + relevance 
+    + '&min_intensity=' + min_intensity
+    + '&max_intensity=' + max_intensity
+     + '&region=' + selectedRegionOptions  + '&flag=' + flag;
+
+    //console.log(apiUrl_pie);
+    update_chart(apiUrl_pie,'3');
+
+    const apiUrl_bar_stacked = `/api/filter_data_bar_stacked?end_year=`+selOptions + '&relevance=' + relevance 
+    + '&min_intensity=' + min_intensity
+    + '&max_intensity=' + max_intensity
+     + '&region=' + selectedRegionOptions  + '&flag=' + flag;
+
+    //console.log(apiUrl_bar_stacked);
+    update_chart(apiUrl_bar_stacked,'4');
+
+    const apiUrl_radar = `/api/filter_data_radar?end_year=`+selOptions + '&relevance=' + relevance 
+    + '&min_intensity=' + min_intensity
+    + '&max_intensity=' + max_intensity
+     + '&region=' + selectedRegionOptions  + '&flag=' + flag;
+
+    console.log(apiUrl_radar);
+    update_chart(apiUrl_radar,'5');
+
+
 
 
 }
@@ -128,7 +193,7 @@ window.call_func = function() {
                             'rgba(153, 102, 255, 1)',
                             'rgba(255, 159, 64, 1)'
                         ],
-                        borderWidth: 1
+                        borderWidth: 2
                     }]
                 },
                 options: {
@@ -224,7 +289,7 @@ console.log(data);    exit;
                             'rgba(153, 102, 255, 1)',
                             'rgba(255, 159, 64, 1)'
                         ],
-                        borderWidth: 1
+                        borderWidth: 2
                     }]
                 },
                 options: {
@@ -244,12 +309,59 @@ console.log(data);    exit;
 
 const ctx_stacked = document.getElementById('myChart_stacked').getContext('2d');
 const myChart_stacked = new Chart(ctx_stacked, {
-    type: 'bar', // Specify the type of chart
+    type: 'radar', // Change chart type to 'radar'
     data: {
-        labels: Object.values(label_stacked),
+        labels: Object.values(label_stacked), // Categories or sectors for radar chart
         datasets: [{
             label: 'Average Impact',
             data: Object.values(label_data_stacked_impact),
+            backgroundColor: 'rgba(255, 99, 132, 0.2)', // Light red fill
+            borderColor: 'rgba(255, 99, 132, 1)', // Red border
+            borderWidth: 2,
+            pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+        }, {
+            label: 'Average Likelihood',
+            data: Object.values(label_data_stacked_intensity),
+            backgroundColor: 'rgba(54, 162, 235, 0.2)', // Light blue fill
+            borderColor: 'rgba(54, 162, 235, 1)', // Blue border
+            borderWidth: 2,
+            pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+        }, {
+            label: 'No. of Topics',
+            data: Object.values(label_data_stacked_topic_count),
+            backgroundColor: 'rgba(128, 128, 128, 0.2)', // Light gray fill
+            borderColor: 'rgba(128, 128, 128, 1)', // Gray border
+            borderWidth: 2,
+            pointBackgroundColor: 'rgba(128, 128, 128, 1)',
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            r: {
+                angleLines: {
+                    display: true // Show angle lines between points
+                },
+                suggestedMin: -10, // Set minimum value for the radar axis
+                suggestedMax: 20,  // Set maximum value for the radar axis
+                ticks: {
+                    display: true, // Show the radial ticks
+                    beginAtZero: false
+                }
+            }
+        }
+    }
+});
+
+
+const ctx_bar_stacked = document.getElementById('bar_stacked').getContext('2d');
+const myChart_bar_stacked = new Chart(ctx_bar_stacked, {
+    type: 'bar', // Specify the type of chart 
+    data: {
+        labels: Object.values(sector_bar_stacked),
+        datasets: [{
+            label: 'Low',
+            data: Object.values(low),
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -266,11 +378,11 @@ const myChart_stacked = new Chart(ctx_stacked, {
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'
             ],
-            borderWidth: 1,
+            borderWidth: 2,
             stack: 'stack1' // Assign the same stack key to both datasets
         }, {
-            label: 'Average Likelihood',
-            data: Object.values(label_data_stacked_intensity),
+            label: 'Medium',
+            data: Object.values(medium),
             backgroundColor: [
                 'rgba(255, 255, 0, 0.2)', // Yellow
                 'rgba(0, 255, 0, 0.2)', // Green
@@ -287,11 +399,11 @@ const myChart_stacked = new Chart(ctx_stacked, {
                 'rgba(255, 128, 0, 1)', // Orange
                 'rgba(128, 0, 128, 1)' // Purple
             ],
-            borderWidth: 1,
+            borderWidth: 2,
             stack: 'stack1' // Assign the same stack key to both datasets
         }, {
-            label: 'No. of Topics',
-            data: Object.values(label_data_stacked_topic_count),
+            label: 'High',
+            data: Object.values(high),
             backgroundColor: [
                 'rgba(128, 128, 128, 0.2)', // Gray
                 'rgba(204, 204, 204, 0.2)', // Light Gray
@@ -309,7 +421,7 @@ const myChart_stacked = new Chart(ctx_stacked, {
                 'rgba(178, 178, 178, 1)' // Even Darker Gray
             ],
             borderWidth: 1,
-            //stack: 'stack1' // Assign the same stack key to both datasets
+            stack: 'stack1' // Assign the same stack key to both datasets
         }]
     },
     options: {
@@ -318,7 +430,7 @@ const myChart_stacked = new Chart(ctx_stacked, {
                 //beginAtZero: true
                 beginAtZero: false,
                 min: -10, // Set a minimum value for the y-axis
-                max: 20, // Set a maximum value for the y-axis
+                max: 40, // Set a maximum value for the y-axis
                 ticks: {
                     display: true // Hide the y-axis ticks
                 }
@@ -326,8 +438,6 @@ const myChart_stacked = new Chart(ctx_stacked, {
         }
     }
 });
-
-
 
 
 

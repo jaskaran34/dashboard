@@ -61,9 +61,9 @@ return $results;
        round(AVG(impact)) AS avg_impact, 
        round(AVG(likelihood)) AS avg_intensity,
        COUNT(*) AS topic_count
-FROM public.topics where length(sector)>0 and impact is not null and intensity is not null
+FROM public.topics where length(sector)>0 and impact is not null
 GROUP BY sector
-ORDER BY avg_impact desc,avg_intensity desc limit 5");
+ORDER BY avg_impact  desc limit 5");
             
             return $results;
     }
@@ -92,6 +92,27 @@ ORDER BY avg_impact desc,avg_intensity desc limit 5");
             return $results;
         
     }
+
+    function bar_stacked_chart(){
+
+        $results = DB::select("WITH ranked_sectors AS (
+select sector,sum(impact2) as impact2,sum(impact3) as impact3,sum(impact4) as impact4,
+                       ROW_NUMBER() OVER (ORDER BY sum(impact2+impact3+impact4) DESC) AS rank from (
+select sector,count(impact) as impact2,0 as impact3,0 as impact4 from topics where length(sector)>0 and impact='2' group by sector
+union all
+select sector,0 as impact2,count(impact) as impact3,0 as impact4 from topics where length(sector)>0 and impact='3' group by sector
+union all
+select sector,0 as impact2,0 as impact3,count(impact) as impact4 from topics where length(sector)>0 and impact='4' group by sector	
+) as c  group by sector  order by sum(impact2+impact3+impact4) desc
+
+    )
+              SELECT sector,impact2,impact3,impact4 
+              FROM ranked_sectors
+              WHERE rank <= 5");
+
+        return $results;
+
+    }
     function show_dashboard(){
 
         $results=$this->bar_graph();
@@ -109,7 +130,22 @@ ORDER BY avg_impact desc,avg_intensity desc limit 5");
 
         
         $intensity=$this->get_intensity();
+
+        $bar_stacked_chart=$this->bar_stacked_chart();
         
+        $low = [];
+        $medium = [];
+        $high = [];
+        $sector_bar_stacked = [];
+       
+
+        foreach ($bar_stacked_chart as $bar_stacked_chart) {
+            $sector_bar_stacked[] = $bar_stacked_chart->sector;
+            $low[] = $bar_stacked_chart->impact2;
+            $medium[] = $bar_stacked_chart->impact3;
+            $high[] = $bar_stacked_chart->impact4;
+           
+        }
         
 
 
@@ -216,7 +252,7 @@ ORDER BY avg_impact desc,avg_intensity desc limit 5");
 
 
         return view('welcome', compact('label','label_data','label_line','label_data_line','label_pie', 'label_data_pie','label_stacked','label_data_stacked_impact','label_data_stacked_intensity',
-    'label_data_stacked_topic_count','end_year_arr','region','min_intensity','max_intensity'));
+    'label_data_stacked_topic_count','end_year_arr','region','min_intensity','max_intensity','sector_bar_stacked','low','medium','high'));
 
     }
     function fetch_data() {

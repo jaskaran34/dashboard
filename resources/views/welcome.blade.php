@@ -334,12 +334,20 @@ input[type=number]::-webkit-outer-spin-button {
         <div class="row design">
 
         <div class="col-5">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Impact Analysis among sectors</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="bar_stacked"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4">
                 <div class="card">
                     <div class="card-header">
-                        
-                    
-                        
-
+                    <h5>Impact,relevance and topic count</h5>
                     </div>
                     <div class="card-body>">
                     <canvas id="myChart_stacked" ></canvas>
@@ -524,6 +532,11 @@ toInput.oninput = () => controlToInput(toSlider, fromInput, toInput, toSlider);
     window.label_data_stacked_impact = @json($label_data_stacked_impact);
     window.label_data_stacked_intensity = @json($label_data_stacked_intensity);
     window.label_data_stacked_topic_count = @json($label_data_stacked_topic_count);
+
+    window.sector_bar_stacked = @json($sector_bar_stacked);
+    window.low = @json($low);
+    window.medium = @json($medium);
+    window.high = @json($high);
    
     
 </script>

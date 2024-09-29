@@ -17,6 +17,12 @@ Route::get('/filter_data_bar', [FetchData::class, 'get_data']);
 
 Route::get('/filter_data_line', [FetchData::class, 'get_data_line']);
 
+Route::get('/filter_data_pie', [FetchData::class, 'filter_data_pie']);
+
+Route::get('/filter_data_bar_stacked', [FetchData::class, 'filter_data_bar_stacked']);
+
+Route::get('/filter_data_radar', [FetchData::class, 'filter_data_radar']);
+
 
 
 
