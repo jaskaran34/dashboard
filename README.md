@@ -24,3 +24,4 @@ This project, built with **Laravel 11** and **Chart.js**, visualizes key analyse
 
 - **Interactive Modal**: Clicking on a bar in the Sector Analysis chart opens a modal displaying detailed information about that sector.
 
+![Screenshot](./public/Screenshot%202024-09-30%20025818.png)
