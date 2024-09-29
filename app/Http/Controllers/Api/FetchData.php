@@ -67,12 +67,14 @@ class FetchData extends Controller
             , $request->impact ? $request->impact : '#'
             , $request->region ? $request->region : '#'
             , $request->relevance ? $request->relevance : '#'
+            ,$request->min_intensity ? $request->min_intensity : '#'
+            ,$request->max_intensity ? $request->max_intensity : '#'
         );
                 
             
     }
 
-    function data_barchart($default_list,$end_year,$impact,$region,$relevance) {
+    function data_barchart($default_list,$end_year,$impact,$region,$relevance,$min_intensity,$max_intensity) {
 
        // return json_encode($end_year);
 
@@ -101,6 +103,9 @@ class FetchData extends Controller
             // Now implode the array with commas
             $cond = $cond.' and region IN (' . implode(',', $regionArray) . ') ';
         }
+
+        
+        $cond=$cond.' and intensity between '.$min_intensity.' and '.$max_intensity;
 
         //return $cond;
         

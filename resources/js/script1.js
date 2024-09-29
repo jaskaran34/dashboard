@@ -48,18 +48,20 @@ window.filter_data= function(){
     let selOptions= document.getElementById('selectedOptions').value ?? '';
     let selectedRegionOptions= document.getElementById('selectedRegionOptions').value ?? '';
     let relevance= document.getElementById('mySlider').value.trim() ?? '';
-
+    let min_intensity=document.getElementById('fromInput').value
+    let max_intensity=document.getElementById('toInput').value
+   
     
     let flag='OV';
     
-    
-
-
     //chart1 
     let listval_mychart=document.getElementById('change1').value;
     let filter_impact=document.getElementById('filter_impact').value;
 
-    const apiUrl_bar = `/api/filter_data_bar?end_year=`+selOptions + '&relevance=' + relevance + '&region=' + selectedRegionOptions + '&listval_mychart=' + listval_mychart + '&flag=' + flag + 
+    const apiUrl_bar = `/api/filter_data_bar?end_year=`+selOptions + '&relevance=' + relevance 
+    + '&min_intensity=' + min_intensity
+    + '&max_intensity=' + max_intensity
+    + '&region=' + selectedRegionOptions + '&listval_mychart=' + listval_mychart + '&flag=' + flag + 
     '&impact=' + filter_impact ;
     
     console.log(apiUrl_bar);
@@ -81,13 +83,17 @@ window.call_func = function() {
     let selOptions= document.getElementById('selectedOptions').value ?? '';
     let flag='OV';
     let selectedRegionOptions= document.getElementById('selectedRegionOptions').value ?? '';
-    
+    let min_intensity=document.getElementById('fromInput').value
+    let max_intensity=document.getElementById('toInput').value
 
     let listval_mychart=document.getElementById('change1').value;
     let filter_impact=document.getElementById('filter_impact').value;
 
 
-    let apiUrl = `/api/filter_data_bar?end_year=`+selOptions + '&region=' + selectedRegionOptions + '&listval_mychart=' + listval_mychart + '&flag=' + flag + '&impact=' + filter_impact;
+    let apiUrl = `/api/filter_data_bar?end_year=`+selOptions + '&region=' + selectedRegionOptions 
+    + '&min_intensity=' + min_intensity
+    + '&max_intensity=' + max_intensity
+    + '&listval_mychart=' + listval_mychart + '&flag=' + flag + '&impact=' + filter_impact;
    // console.log(apiUrl);
     update_chart(apiUrl,'1');
 

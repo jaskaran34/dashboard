@@ -104,6 +104,15 @@ ORDER BY avg_impact desc,avg_intensity desc limit 5");
             return $results;
 
     }
+
+    function get_intensity(){
+
+
+        $results = DB::select("select  MIN(distinct(intensity)),MAX(distinct(intensity)) from topics");
+            
+            return $results;
+        
+    }
     function show_dashboard(){
 
         $results=$this->bar_graph();
@@ -120,6 +129,24 @@ ORDER BY avg_impact desc,avg_intensity desc limit 5");
         $region_arr=$this->fetch_region();
 
         
+        $intensity=$this->get_intensity();
+        
+        
+
+
+
+        $min_intensity = [];
+        $max_intensity = [];
+       
+
+        foreach ($intensity as $intensity) {
+            $min_intensity[] = $intensity->min;
+            $max_intensity[] = $intensity->max;
+           
+        }
+
+    
+
         $region = [];
        
 
@@ -185,7 +212,7 @@ ORDER BY avg_impact desc,avg_intensity desc limit 5");
 
 
         return view('welcome', compact('label','label_data','label_line','label_data_line','label_pie', 'label_data_pie','label_stacked','label_data_stacked_impact','label_data_stacked_intensity',
-    'label_data_stacked_topic_count','end_year_arr','region'));
+    'label_data_stacked_topic_count','end_year_arr','region','min_intensity','max_intensity'));
 
     }
     function fetch_data() {

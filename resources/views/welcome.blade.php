@@ -16,6 +16,7 @@
 .dropdown-checkbox {
     position: relative;
     display: inline-block;
+    vertical-align: super;
 }
 
 .dropdown-checkbox-content {
@@ -62,7 +63,97 @@
   color: #007bff;
   margin-bottom: 5px;
   margin-left: 20px;
+  vertical-align: super;
 
+}
+
+.range_container {
+  display: flex;
+  flex-direction: row;
+  margin-left: 20px;
+  margin-top: 60px;
+
+}
+
+.sliders_control {
+  position: relative;
+  min-height: 50px;
+}
+
+.form_control {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  font-size: 24px;
+  color: #635a5a;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  pointer-events: all;
+  width: 24px;
+  height: 24px;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px #C6C6C6;
+  cursor: pointer;
+}
+
+input[type=range]::-moz-range-thumb {
+  -webkit-appearance: none;
+  pointer-events: all;
+  width: 24px;
+  height: 24px;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px #C6C6C6;
+  cursor: pointer;  
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+  background: #f7f7f7;
+}
+
+input[type=range]::-webkit-slider-thumb:active {
+  box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
+  -webkit-box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
+}
+
+input[type="number"] {
+  color: #8a8383;
+  width: 50px;
+  height: 30px;
+  font-size: 20px;
+  border: none;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {  
+   opacity: 1;
+}
+
+#mySlider{
+  -webkit-appearance: none; 
+  appearance: none;
+  height: 2px;
+  background-color: #C6C6C6;
+  pointer-events: none;
+  vertical-align: super;
+  
+}
+
+.sli {
+  -webkit-appearance: none; 
+  appearance: none;
+  height: 2px;
+  position: absolute;
+  background-color: #C6C6C6;
+  pointer-events: none;
+}
+
+#fromSlider {
+  height: 0;
+  z-index: 1;
 }
 </style>
     </head>
@@ -113,12 +204,42 @@
     <input type="hidden" id="selectedRegionOptions" name="selectedRegionOptions" value="">
 </div>
                         </td>
-                        <td><label class="lbl">Relevance</label>
+                        <td>
+                            <label class="lbl">Relevance</label>
                         <input type="range" id="mySlider" min="0" max="7" step="1" value="0">
                         <label id="sliderValue">0</label>
                         </td>
+
                         <td>
-                            <button class="btn btn-primary" onclick="filter_data();">filter</button>
+                        <label class="lbl">Intensity</label>
+                        </td>
+                        <td>
+
+                        
+                        <div class="range_container">
+
+    <div class="sliders_control">
+    
+        <input id="fromSlider" class="sli" type="range" value="{{ $min_intensity[0] }}" min="{{ $min_intensity[0] }}" max="{{ $max_intensity[0] }}"/>
+        <input id="toSlider" class="sli" type="range" value="{{ $max_intensity[0] }}" min="{{ $min_intensity[0] }}" max="{{ $max_intensity[0] }}"/>
+    </div>
+    <div class="form_control">
+        <div class="form_control_container">
+            <div class="form_control_container__time" style="font-size: 15px;
+    margin-top: 9px;">Min</div>
+            <input class="form_control_container__time__input" type="number" id="fromInput" value="{{ $min_intensity[0] }}" min="{{ $min_intensity[0] }}" max="{{ $max_intensity[0] }}"/>
+        </div>
+        <div class="form_control_container">
+            <div class="form_control_container__time" style="font-size: 15px;
+    margin-top: 9px;">Max</div>
+            <input class="form_control_container__time__input" type="number" id="toInput" value="{{ $max_intensity[0] }}" min="{{ $min_intensity[0] }}" max="{{ $max_intensity[0] }}"/>
+        </div>
+    </div>
+</div>
+                        </td>
+
+                        <td>
+                            <button class="btn btn-info " style="margin-left: 50px;color:white;" onclick="filter_data();">Filter</button>
                         </td>
                     </tr>
                 </table>
@@ -281,6 +402,94 @@ slider.addEventListener('input', () => {
     slider.value = closestValue;
     sliderValue.textContent = closestValue;
 });
+
+function controlFromInput(fromSlider, fromInput, toInput, controlSlider) {
+    const [from, to] = getParsed(fromInput, toInput);
+    fillSlider(fromInput, toInput, '#C6C6C6', '#25daa5', controlSlider);
+    if (from > to) {
+        fromSlider.value = to;
+        fromInput.value = to;
+    } else {
+        fromSlider.value = from;
+    }
+}
+    
+function controlToInput(toSlider, fromInput, toInput, controlSlider) {
+    const [from, to] = getParsed(fromInput, toInput);
+    fillSlider(fromInput, toInput, '#C6C6C6', '#25daa5', controlSlider);
+    setToggleAccessible(toInput);
+    if (from <= to) {
+        toSlider.value = to;
+        toInput.value = to;
+    } else {
+        toInput.value = from;
+    }
+}
+
+function controlFromSlider(fromSlider, toSlider, fromInput) {
+  const [from, to] = getParsed(fromSlider, toSlider);
+  fillSlider(fromSlider, toSlider, '#C6C6C6', '#25daa5', toSlider);
+  if (from > to) {
+    fromSlider.value = to;
+    fromInput.value = to;
+  } else {
+    fromInput.value = from;
+  }
+}
+
+function controlToSlider(fromSlider, toSlider, toInput) {
+  const [from, to] = getParsed(fromSlider, toSlider);
+  fillSlider(fromSlider, toSlider, '#C6C6C6', '#25daa5', toSlider);
+  setToggleAccessible(toSlider);
+  if (from <= to) {
+    toSlider.value = to;
+    toInput.value = to;
+  } else {
+    toInput.value = from;
+    toSlider.value = from;
+  }
+}
+
+function getParsed(currentFrom, currentTo) {
+  const from = parseInt(currentFrom.value, 10);
+  const to = parseInt(currentTo.value, 10);
+  return [from, to];
+}
+
+function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
+    const rangeDistance = to.max-to.min;
+    const fromPosition = from.value - to.min;
+    const toPosition = to.value - to.min;
+    controlSlider.style.background = `linear-gradient(
+      to right,
+      ${sliderColor} 0%,
+      ${sliderColor} ${(fromPosition)/(rangeDistance)*100}%,
+      ${rangeColor} ${((fromPosition)/(rangeDistance))*100}%,
+      ${rangeColor} ${(toPosition)/(rangeDistance)*100}%, 
+      ${sliderColor} ${(toPosition)/(rangeDistance)*100}%, 
+      ${sliderColor} 100%)`;
+}
+
+function setToggleAccessible(currentTarget) {
+  const toSlider = document.querySelector('#toSlider');
+  if (Number(currentTarget.value) <= 0 ) {
+    toSlider.style.zIndex = 2;
+  } else {
+    toSlider.style.zIndex = 0;
+  }
+}
+
+const fromSlider = document.querySelector('#fromSlider');
+const toSlider = document.querySelector('#toSlider');
+const fromInput = document.querySelector('#fromInput');
+const toInput = document.querySelector('#toInput');
+fillSlider(fromSlider, toSlider, '#C6C6C6', '#25daa5', toSlider);
+setToggleAccessible(toSlider);
+
+fromSlider.oninput = () => controlFromSlider(fromSlider, toSlider, fromInput);
+toSlider.oninput = () => controlToSlider(fromSlider, toSlider, toInput);
+fromInput.oninput = () => controlFromInput(fromSlider, fromInput, toInput, toSlider);
+toInput.oninput = () => controlToInput(toSlider, fromInput, toInput, toSlider);
 
 
     window.label= @json($label);
